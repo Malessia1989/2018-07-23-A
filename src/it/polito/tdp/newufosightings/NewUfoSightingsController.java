@@ -10,10 +10,12 @@ import java.util.ResourceBundle;
 import it.polito.tdp.newufosightings.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 
 public class NewUfoSightingsController {
 
@@ -56,7 +58,29 @@ public class NewUfoSightingsController {
 
 	@FXML
 	void doSelezionaAnno(ActionEvent event) {
+		
+		String annoInserito= txtAnno.getText();
+		
+		if(annoInserito != null && !annoInserito.isEmpty()) {
+			if(model.isDigit(annoInserito)) {
+				if(model.annoValido(annoInserito)) {
+					cmbBoxForma.getItems().addAll(model.getShapedellAnno(annoInserito));
+					
+				}else {
+					showAlert("Inserire un anno tra il 1910 e il 2014");
+				}
+			}else {
+				showAlert("Inserire un anno di 4 cifre");
+			}
+		}else {
+			showAlert("Inserire un anno");
+		}
+	}
 
+	private void showAlert(String message) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setContentText(message);
+		alert.show();
 	}
 
 	@FXML

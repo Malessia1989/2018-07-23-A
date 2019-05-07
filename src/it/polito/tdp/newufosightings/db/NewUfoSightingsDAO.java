@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import it.polito.tdp.newufosightings.model.Sighting;
@@ -64,6 +65,38 @@ public class NewUfoSightingsDAO {
 			System.out.println("Errore connessione al database");
 			throw new RuntimeException("Error Connection Database");
 		}
+	}
+
+	public List<String> getShape(String annoInserito) {
+		
+		String sql="select s.shape as forma, year(s.datetime) as anno\n" + 
+				"from sighting s\n" + 
+				"where year(s.datetime)=? " + 
+				"order by anno ,forma asc";
+		
+		List<String> forme= new LinkedList<String>();
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, Integer.parseInt(annoInserito));
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+				String forma=rs.getString("forma");
+				if(!forme.contains(forma))
+				forme.add(forma);
+				
+			}
+
+			conn.close();
+			return forme;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Errore connessione al database");
+			throw new RuntimeException("Error Connection Database");
+		}
+	
 	}
 
 }
