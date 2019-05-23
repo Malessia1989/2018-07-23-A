@@ -54,6 +54,29 @@ public class NewUfoSightingsController {
 	@FXML
 	void doCreaGrafo(ActionEvent event) {
 
+		String annoInserito = txtAnno.getText();
+		String forma = cmbBoxForma.getValue();
+
+		if (forma != null) {
+			if (annoInserito != null && !annoInserito.isEmpty()) {
+				if (model.isDigit(annoInserito)) {
+					if (model.annoValido(annoInserito)) {
+						String elenco=model.creaGrafo(annoInserito,forma);
+						txtResult.setText(elenco);
+
+					} else {
+						showAlert("Inserire un anno tra il 1910 e il 2014");
+					}
+
+				} else {
+					showAlert("Inserire un anno di 4 cifre");
+				}
+			} else {
+				showAlert("Inserire un anno");
+			}
+		} else {
+			showAlert("selezionare una forma");
+		}
 	}
 
 	@FXML
