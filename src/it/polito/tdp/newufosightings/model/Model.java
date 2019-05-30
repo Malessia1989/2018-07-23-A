@@ -16,6 +16,7 @@ public class Model {
 	NewUfoSightingsDAO dao;
 	Map<String,State> idMap;
 	Map<State,State> confini;
+	 
 	
 	
 	public Model() {
@@ -26,7 +27,7 @@ public class Model {
 		dao.loadAllStates(idMap);
 	}
 	
-
+   
 	public boolean isValid(String anno) {
 		
 		if(!anno.matches("\\d{4}"))
