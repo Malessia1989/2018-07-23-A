@@ -10,10 +10,12 @@ import java.util.ResourceBundle;
 import it.polito.tdp.newufosightings.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 
 public class NewUfoSightingsController {
 
@@ -51,12 +53,51 @@ public class NewUfoSightingsController {
 
 	@FXML
 	void doCreaGrafo(ActionEvent event) {
+		String anno = txtAnno.getText();
+		String forma=cmbBoxForma.getValue();
+		
+		if (anno != null && !anno.isEmpty()) {
+			if (model.isValid(anno)) {
+				if(forma!= null) {
+				
+					String elenco=model.creaGrafo(anno, forma);
+					txtResult.setText(elenco);
+					
+				} else {
+					showAlert("Selezionare una forma");
+				}
 
+			} else {
+				showAlert("Inserire un anno valido  ");
+			}
+
+		} else {
+			showAlert("Inserire un anno tra il 1910 e il 2016");
+		}
+		
 	}
 
 	@FXML
 	void doSelezionaAnno(ActionEvent event) {
+		
+		String anno = txtAnno.getText();
+		if (anno != null && !anno.isEmpty()) {
+			if (model.isValid(anno)) {
+				cmbBoxForma.getItems().addAll(model.getForme(anno));
+			} else {
+				showAlert("Inserire un anno valido  ");
+			}
 
+		} else {
+			showAlert("Inserire un anno tra il 1910 e il 2016");
+		}
+	}
+
+	private void showAlert(String message) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setContentText(message);
+		alert.show();
+		
 	}
 
 	@FXML

@@ -22,6 +22,10 @@ public class State {
 		this.population = population;
 		this.neighbors = neighbors;
 	}
+								
+	public State(String id) {	
+		this.id=id;
+	}
 
 	public String getId() {
 		return id;
